@@ -1,7 +1,10 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEnum, MinLength } from "class-validator";
 
-export class CreateNinjaDto {
+export class GetNinjaDto {
+    @ApiProperty()
+    id:number;
+
     @ApiProperty()
     @MinLength(3 , {message: 'name must be at least 3 characters'})
     name:string;
