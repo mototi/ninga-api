@@ -1,5 +1,4 @@
 export class CreateNinjaDto {
     name:string;
-    age:number;
-    salary:number;
+    style:string;
 }
