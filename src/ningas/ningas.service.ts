@@ -48,4 +48,10 @@ export class NingasService {
 
         return this.getNinjaById(id)
     }
+
+    removeNinja(id:number){
+        const toBeRemoved = this.getNinjaById(id)
+        this.ninjas = this.ninjas.filter(ninja => ninja.id != id)
+        return toBeRemoved
+    }
 }
