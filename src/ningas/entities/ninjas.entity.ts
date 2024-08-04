@@ -11,4 +11,7 @@ export class Ninjas {
     @Column()
     style: string;
 
+    @Column()
+    rank: string;
+
 }

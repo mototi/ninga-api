@@ -45,7 +45,7 @@ class ConfigService {
         password: this.POSTGRES_PASSWORD,
         database: this.POSTGRES_DATABASE,
 
-        entities: [`${__dirname}/../**/*.entity{.ts,.js}`],
+        entities: [`${__dirname}/../**/*.entity.js`],
 
         migrationsTableName: 'migrations',
 
