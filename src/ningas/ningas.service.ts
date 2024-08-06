@@ -1,57 +1,51 @@
-import { Injectable } from '@nestjs/common';
-import { error } from 'console';
+import { HttpException, Injectable } from '@nestjs/common';
 import { CreateNinjaDto } from './dto/create-ninja.dto';
 import { UpdateNinjaDto } from './dto/update-ninja.dto';
+import { Repository } from 'typeorm';
+import { Ninjas } from './entities/ninjas.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class NingasService {
 
-    ninjas = [
-        {'id': 1, 'name': 'mice', 'style': 'slow'},
-        {'id': 2, 'name': 'abdallah', 'style': 'medium'},
-        {'id': 3, 'name': 'shangahay', 'style': 'fast'},
-        {'id': 4, 'name': 'tyson', 'style': 'medium'}
-    ]
+    constructor( @InjectRepository(Ninjas) private ninjasRepository: Repository<Ninjas>){}
 
-    getNingas(style?: 'fast' | 'slow' | 'medium'){
+    getNingas(style?: 'fast' | 'slow' | 'medium'): Promise<Ninjas[]>{
         if (style){
-            return this.ninjas.filter(ninja => ninja.style == style)
+            return this.ninjasRepository.find({
+                where: {
+                    style : style
+                }
+            })
+        }
+        return this.ninjasRepository.find()
+    }
+
+    async getNinjaById(id:number) : Promise<Ninjas> {
+        const ninja = await this.ninjasRepository.findOne({ where: {id}})
+        if(!ninja){
+            throw new HttpException('resource not found', 404)
+        }
+        return ninja
+    }
+
+    async createNinja(createNinjaDto : CreateNinjaDto){
+        const newNinja = this.ninjasRepository.create(createNinjaDto)
+        return this.ninjasRepository.save(newNinja)
+    }
+
+    async updateNinja(id:number, updateNinjaDto: UpdateNinjaDto){
+        const ninja = await this.getNinjaById(id)
+
+        for (let key in updateNinjaDto){
+            ninja[key] = updateNinjaDto[key]
         }
 
-        return this.ninjas
+        return this.ninjasRepository.save(ninja)
     }
 
-    getNinjaById(id:number){
-        const ninga = this.ninjas.filter(ninja => ninja.id == id)
-        if(ninga.length == 0){
-            throw new Error('no ninja found with this id')            
-        }
-        return ninga
-    }
-
-    createNinja(createNinjaDto : CreateNinjaDto){
-        const newNinja = {
-            ...createNinjaDto,
-            'id' : Date.now()
-        }
-        this.ninjas.push(newNinja)
-        return newNinja
-    }
-
-    updateNinja(id:number, updateNinjaDto: UpdateNinjaDto){
-        this.ninjas = this.ninjas.map((ninja) => {
-            if(ninja.id == id){
-                return { ...ninja, ...updateNinjaDto}
-            }
-            return ninja 
-        })
-
-        return this.getNinjaById(id)
-    }
-
-    removeNinja(id:number){
-        const toBeRemoved = this.getNinjaById(id)
-        this.ninjas = this.ninjas.filter(ninja => ninja.id != id)
-        return toBeRemoved
+    async removeNinja(id:number){
+        const ninja = await this.getNinjaById(id)
+        return this.ninjasRepository.remove(ninja)
     }
 }

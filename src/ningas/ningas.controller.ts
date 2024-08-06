@@ -1,10 +1,9 @@
 import { Controller, Get, Post, Put, Param, Query, Body, Delete, NotFoundException, ParseIntPipe, ValidationPipe, UseGuards } from '@nestjs/common';
 import { CreateNinjaDto } from './dto/create-ninja.dto';
-import { UpdateUserDto } from 'src/users/dto/update-user.dto';
 import { NingasService } from './ningas.service';
-import { BeltGuard } from 'src/belt.guard';
 import { ApiCreatedResponse, ApiOkResponse, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetNinjaDto } from './dto/get-ninja.dto';
+import { UpdateNinjaDto } from './dto/update-ninja.dto';
 @ApiTags('ninjas')
 @Controller('ningas')
 export class NingasController {
@@ -29,7 +28,6 @@ export class NingasController {
     }
 
     @ApiCreatedResponse({type: GetNinjaDto, description: 'The record has been successfully created.'})
-    @UseGuards(BeltGuard)
     @Post()
     createNinja(@Body(new ValidationPipe()) createNinjaDto: CreateNinjaDto){
         return this.ningasService.createNinja(createNinjaDto)
@@ -37,7 +35,7 @@ export class NingasController {
 
     @ApiOkResponse({type: GetNinjaDto, description: 'The record has been updated successfully.'})
     @Put(':id')
-    updateNinga(@Param("id", ParseIntPipe) id:number, @Body() updateNingaDto: UpdateUserDto){
+    updateNinga(@Param("id", ParseIntPipe) id:number, @Body() updateNingaDto: UpdateNinjaDto){
         return this.ningasService.updateNinja(id, updateNingaDto)
     }
 

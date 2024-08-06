@@ -12,4 +12,7 @@ export class GetNinjaDto {
     @ApiProperty()
     @IsEnum(['fast', 'slow', 'medium'] , {message: 'style must be either fast, slow or medium'})
     style:string;
+
+    @ApiProperty()
+    rank:string;
 }
