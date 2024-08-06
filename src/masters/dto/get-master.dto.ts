@@ -3,7 +3,7 @@ import { CreateMasterDto } from './create-master.dto';
 import { MinLength } from 'class-validator';
 import { GetNinjaDto } from 'src/ningas/dto/get-ninja.dto';
 
-export class UpdateMasterDto extends PartialType(CreateMasterDto) {
+export class getMasterDto extends PartialType(CreateMasterDto) {
 
     @ApiProperty()
     id: number;

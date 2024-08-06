@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Masters } from '../../masters/entities/master.entity';
 
 @Entity()
 export class Ninjas {
@@ -13,5 +14,12 @@ export class Ninjas {
 
     @Column()
     rank: string;
+
+    @Column({ name: 'master_id' })
+    masterId: number;
+
+    @ManyToOne(() => Masters, (master) => master.ninjas)
+    @JoinColumn({ name: 'master_id' })
+    master: Masters;
 
 }

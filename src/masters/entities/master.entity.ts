@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Ninjas } from "../../ningas/entities/ninjas.entity";
 
 
 @Entity()
@@ -18,4 +19,7 @@ export class Masters {
 
     @Column()
     weapon: string;
+
+    @OneToMany(() => Ninjas, (ninja) => ninja.master)
+    ninjas: Ninjas[];
 }

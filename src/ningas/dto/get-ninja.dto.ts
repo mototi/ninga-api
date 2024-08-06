@@ -15,4 +15,7 @@ export class GetNinjaDto {
 
     @ApiProperty()
     rank:string;
+
+    @ApiProperty()
+    masterId:number;
 }

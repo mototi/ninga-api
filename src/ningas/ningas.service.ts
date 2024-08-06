@@ -18,11 +18,14 @@ export class NingasService {
                 }
             })
         }
-        return this.ninjasRepository.find()
+        return this.ninjasRepository.find({relations: ['master']})
     }
 
     async getNinjaById(id:number) : Promise<Ninjas> {
-        const ninja = await this.ninjasRepository.findOne({ where: {id}})
+        const ninja = await this.ninjasRepository.findOne({
+            relations: ['master'], 
+            where: {id}
+        })
         if(!ninja){
             throw new HttpException('resource not found', 404)
         }
